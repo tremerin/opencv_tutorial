@@ -1,19 +1,29 @@
-from pytube import YouTube
-import sys
+from pytubefix import YouTube
 
 # URL del video de YouTube
-if len(sys.argv) == 2:
-    video_url = sys.argv[1]
-    print("url:", video_url)
-else:
-    exit()
+url = "https://www.youtube.com/watch?v=NxxLf-pKnVQ&ab_channel=Darwin"  # Reemplaza con tu URL
 
-yt = YouTube(video_url)
-print(len(yt.streams))
+try:
+    # Crear objeto YouTube
+    yt = YouTube(url)
+    #print(yt)
 
-#video = yt.streams.get_highest_resolution()
+    # Mostrar información del video
+    print("📌 Título:", yt.title)
+    print("⏳ Duración:", yt.length, "segundos")
+    print("👤 Autor:", yt.author)
 
+    # Descargar la mejor resolución disponible
+    stream = yt.streams.get_highest_resolution()
+    print("⬇️ Descargando:", stream.resolution)
+    #for stream in yt.streams:
+    #    print(stream)
+    
+    # Ruta de descarga (opcional: omítelo para guardar en la carpeta actual)
+    download_path = "../resources/downloads"
+    stream.download(output_path=download_path)
+    
+    print("✅ ¡Descarga completada!")
 
-#video.download()
-
-print("✅ Video descargado con éxito!")
+except Exception as e:
+    print("❌ Error:", str(e))
